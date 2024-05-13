@@ -6,7 +6,7 @@ import 'package:mytoko_app/core/constants/formatter.dart';
 import 'package:mytoko_app/data/models/request/favorite_request_model.dart';
 import 'package:mytoko_app/data/models/response/products_response_model.dart';
 import 'package:mytoko_app/presentation/home/bloc/favorite/favorite_bloc.dart';
-import 'package:mytoko_app/presentation/home/pages/product_detail_page.dart';
+import 'package:mytoko_app/presentation/home/pages/detail_page.dart';
 import '../../../core/constants/app_image.dart';
 
 class ProductCard extends StatelessWidget {
@@ -23,7 +23,7 @@ class ProductCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductDetailPage(productId: product.id!),
+            builder: (context) => DetailPage(productId: product.id!),
           ),
         );
       },

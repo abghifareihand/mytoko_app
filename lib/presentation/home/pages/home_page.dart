@@ -5,7 +5,8 @@ import 'package:mytoko_app/core/components/spaces.dart';
 import 'package:mytoko_app/core/constants/app_color.dart';
 import 'package:mytoko_app/core/constants/app_font.dart';
 import 'package:mytoko_app/core/extensions/screen.dart';
-import 'package:mytoko_app/presentation/home/pages/search_product_page.dart';
+import 'package:mytoko_app/presentation/home/pages/cart_page.dart';
+import 'package:mytoko_app/presentation/home/pages/search_page.dart';
 import 'package:mytoko_app/presentation/home/widgets/banner_slider.dart';
 import 'package:mytoko_app/presentation/home/widgets/product_card.dart';
 import 'package:mytoko_app/presentation/home/widgets/product_card_shimmer.dart';
@@ -101,9 +102,19 @@ class _HomePageState extends State<HomePage> {
                                   color: AppColor.white.withOpacity(0.3),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: const Icon(
-                                  Icons.shopping_cart,
-                                  color: AppColor.white,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const CartPage(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Icon(
+                                    Icons.shopping_cart,
+                                    color: AppColor.white,
+                                  ),
                                 ),
                               ),
                               const SpaceWidth(10),

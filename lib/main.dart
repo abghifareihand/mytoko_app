@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mytoko_app/presentation/home/bloc/add_cart/add_cart_bloc.dart';
+import 'package:mytoko_app/presentation/home/bloc/cart/cart_bloc.dart';
 import 'package:mytoko_app/presentation/home/bloc/favorite/favorite_bloc.dart';
 import 'package:mytoko_app/presentation/home/bloc/product_search/product_search_bloc.dart';
+import 'package:mytoko_app/presentation/home/bloc/remove_cart/remove_cart_bloc.dart';
 import 'presentation/auth/pages/login_page.dart';
 import 'presentation/auth/bloc/user/user_bloc.dart';
 import 'presentation/home/bloc/products/products_bloc.dart';
@@ -43,6 +46,15 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ReviewBloc(),
+        ),
+        BlocProvider(
+          create: (context) => AddCartBloc(),
+        ),
+        BlocProvider(
+          create: (context) => CartBloc(),
+        ),
+        BlocProvider(
+          create: (context) => RemoveCartBloc(),
         ),
       ],
       child: MaterialApp(

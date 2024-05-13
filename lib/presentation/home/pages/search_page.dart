@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mytoko_app/core/components/loading.dart';
 import 'package:mytoko_app/core/constants/app_color.dart';
-import 'package:mytoko_app/core/constants/formatter.dart';
 import 'package:mytoko_app/presentation/home/bloc/favorite/favorite_bloc.dart';
 import 'package:mytoko_app/presentation/home/bloc/product_search/product_search_bloc.dart';
-import 'package:mytoko_app/presentation/home/bloc/products/products_bloc.dart';
 import 'package:mytoko_app/presentation/home/widgets/product_card.dart';
+import 'package:mytoko_app/presentation/home/widgets/product_shimmer.dart';
 
 class SearchProductPage extends StatefulWidget {
   const SearchProductPage({
@@ -118,7 +117,7 @@ class _SearchProductPageState extends State<SearchProductPage> {
                 return const SizedBox();
               },
               loading: () {
-                return const LoadingSpinkit();
+                return const ProductShimmer();
               },
               loaded: (productResponse) {
                 if (productResponse.isEmpty) {

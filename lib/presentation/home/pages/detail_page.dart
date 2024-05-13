@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:mytoko_app/core/components/loading.dart';
 import 'package:mytoko_app/core/constants/app_image.dart';
+import 'package:mytoko_app/data/models/request/add_cart_request_model.dart';
 import 'package:mytoko_app/data/models/request/favorite_request_model.dart';
+import 'package:mytoko_app/presentation/home/bloc/add_cart/add_cart_bloc.dart';
 import 'package:mytoko_app/presentation/home/bloc/favorite/favorite_bloc.dart';
 import 'package:mytoko_app/presentation/home/pages/review_add_page.dart';
 import 'package:mytoko_app/presentation/home/pages/review_detail_page.dart';
@@ -13,18 +16,18 @@ import '../../../core/constants/app_color.dart';
 import '../../../core/constants/app_font.dart';
 import '../bloc/product_detail/product_detail_bloc.dart';
 
-class ProductDetailPage extends StatefulWidget {
+class DetailPage extends StatefulWidget {
   final int productId;
-  const ProductDetailPage({
+  const DetailPage({
     super.key,
     required this.productId,
   });
 
   @override
-  State<ProductDetailPage> createState() => _ProductDetailPageState();
+  State<DetailPage> createState() => _DetailPageState();
 }
 
-class _ProductDetailPageState extends State<ProductDetailPage> {
+class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     context
@@ -363,25 +366,111 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           );
         },
       ),
+      //   bottomNavigationBar: Container(
+      //     padding: const EdgeInsets.all(12),
+      //     child: ElevatedButton(
+      //       style: ElevatedButton.styleFrom(
+      //         shape: RoundedRectangleBorder(
+      //           borderRadius: BorderRadius.circular(10),
+      //         ),
+      //       ),
+      //       onPressed: () {
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => ReviewAddPage(
+      //       productId: widget.productId,
+      //     ),
+      //   ),
+      // );
+      //       },
+      //       child: const Text('Add Review'),
+      //     ),
+      //   ),
+      // );
+
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(12),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+        height: 60,
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          children: [
+            Expanded(
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: AppColor.white,
+                  foregroundColor: AppColor.primary,
+                  side: const BorderSide(color: AppColor.primary),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ReviewAddPage(
+                        productId: widget.productId,
+                      ),
+                    ),
+                  );
+                },
+                child: const Text('Add Review'),
+              ),
             ),
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ReviewAddPage(
-                  productId: widget.productId,
+            const SpaceWidth(12),
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.primary,
+                  foregroundColor: AppColor.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  final addCartRequest = AddCartRequestModel(
+                    productId: widget.productId,
+                  );
+                  context
+                      .read<AddCartBloc>()
+                      .add(AddCartEvent.addToCart(addCartRequest));
+                },
+                child: BlocConsumer<AddCartBloc, AddCartState>(
+                  listener: (context, state) {
+                    state.maybeWhen(
+                      orElse: () {},
+                    loaded: (addCartResponse) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(addCartResponse.message!),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                    },
+                      error: (message) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(message),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  builder: (context, state) {
+                    return state.maybeWhen(
+                      orElse: () {
+                        return const Text('Add to Cart');
+                      },
+                      loading: () {
+                        return const LoadingSpinkit();
+                      },
+                    );
+                  },
                 ),
               ),
-            );
-          },
-          child: const Text('Add Review'),
+            ),
+          ],
         ),
       ),
     );
