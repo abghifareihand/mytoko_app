@@ -31,12 +31,13 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     //       debugPrint('Get User: ${data.data!.data!.length}');
     //       debugPrint('Page: $page');
     //       hasMore = data.data!.data!.length < limit ? false : true;
-    //       products.addAll(data.data!.data!);
+          // products.addAll(data.data!.data!);
     //       page++;
     //       debugPrint('Total Users: ${products.length}');
     //       emit(_Loaded(products));
     //     },
     //   );
     // });
+
   }
 }

@@ -12,7 +12,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
     on<_GetProductDetail>((event, emit) async {
       emit(const _Loading());
       final result =
-          await ProductRemoteDatasource().getProductDetail(event.productId);
+          await ProductRemoteDatasource().getProductById(event.productId);
       result.fold(
         (error) => emit(_Error(error)),
         (data) => emit(_Loaded(data)),

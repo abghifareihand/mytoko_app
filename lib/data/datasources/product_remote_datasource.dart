@@ -53,7 +53,7 @@ class ProductRemoteDatasource {
     }
   }
 
-  Future<Either<String, ProductDetailResponseModel>> getProductDetail(int productId) async {
+  Future<Either<String, ProductDetailResponseModel>> getProductById(int productId) async {
     final token = await AuthLocalDatasource().getToken();
     final headers = {
       'Accept': 'application/json',
@@ -69,6 +69,28 @@ class ProductRemoteDatasource {
 
     if (response.statusCode == 200) {
       return Right(ProductDetailResponseModel.fromJson(response.body));
+    } else {
+      final errorMessage = jsonDecode(response.body)['message'];
+      return Left(errorMessage);
+    }
+  }
+
+  Future<Either<String, ProductsResponseModel>> getProductByName(String productName) async {
+    final token = await AuthLocalDatasource().getToken();
+    final headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    final response = await http.get(
+      Uri.parse('${Variables.baseUrl}/api/products?name=$productName'),
+      headers: headers,
+    );
+
+    log('Response Get Products by Name : ${response.body}');
+
+    if (response.statusCode == 200) {
+      return Right(ProductsResponseModel.fromJson(response.body));
     } else {
       final errorMessage = jsonDecode(response.body)['message'];
       return Left(errorMessage);

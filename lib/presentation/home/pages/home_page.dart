@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mytoko_app/core/components/spaces.dart';
 import 'package:mytoko_app/core/constants/app_color.dart';
 import 'package:mytoko_app/core/constants/app_font.dart';
 import 'package:mytoko_app/core/extensions/screen.dart';
+import 'package:mytoko_app/presentation/home/pages/search_product_page.dart';
 import 'package:mytoko_app/presentation/home/widgets/banner_slider.dart';
 import 'package:mytoko_app/presentation/home/widgets/product_card.dart';
 import 'package:mytoko_app/presentation/home/widgets/product_card_shimmer.dart';
@@ -124,22 +126,70 @@ class _HomePageState extends State<HomePage> {
                           const SpaceHeight(32),
 
                           /// Search
-                          TextFormField(
-                            decoration: InputDecoration(
-                              hintText: 'Search',
-                              filled: true,
-                              fillColor: AppColor.white,
-                              border: OutlineInputBorder(
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SearchProductPage(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: AppColor.white,
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide.none,
                               ),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              prefixIcon: const Icon(
-                                Icons.search,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.search,
+                                      color: AppColor.grey400,
+                                    ),
+                                    const SpaceWidth(8.0),
+                                    Text(
+                                      'Search',
+                                      style: AppFont.greyText.copyWith(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
+                          )
+
+                          // TextFormField(
+                          //   onTap: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) =>
+                          //         const SearchProductPage(),
+                          //   ),
+                          // );
+                          //   },
+                          //   decoration: InputDecoration(
+                          //     hintText: 'Search',
+                          //     filled: true,
+                          //     fillColor: AppColor.white,
+                          //     border: OutlineInputBorder(
+                          //       borderRadius: BorderRadius.circular(10),
+                          //       borderSide: BorderSide.none,
+                          //     ),
+                          //     contentPadding:
+                          //         const EdgeInsets.symmetric(horizontal: 16.0),
+                          //     prefixIcon: const Icon(
+                          //       Icons.search,
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -188,10 +238,7 @@ class _HomePageState extends State<HomePage> {
                         );
                       }
                       return SliverPadding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 20,
-                          horizontal: 20,
-                        ),
+                        padding: const EdgeInsets.all(20),
                         sliver: SliverGrid(
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
