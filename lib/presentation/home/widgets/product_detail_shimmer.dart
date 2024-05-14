@@ -4,8 +4,7 @@ import 'package:mytoko_app/core/constants/app_font.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ProductDetailShimmer extends StatelessWidget {
-
- const ProductDetailShimmer({
+  const ProductDetailShimmer({
     super.key,
   });
 
@@ -13,15 +12,6 @@ class ProductDetailShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        /// Image slider
-        // ImageSliderProduct(
-        //   imageUrls: widget.product.galleries
-        //       .map((gallery) => gallery.imageUrl)
-        //       .toList(),
-        //   controller: _controller,
-        // ),
-
-        /// Image no slider
         Stack(
           children: [
             // Shimmer effect for image
@@ -32,82 +22,6 @@ class ProductDetailShimmer extends StatelessWidget {
                 width: double.infinity,
                 height: 300,
                 color: Colors.white,
-              ),
-            ),
-            Positioned(
-              top: 18,
-              left: 20,
-              right: 20,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  /// Back
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            spreadRadius: 1,
-                            blurRadius: 2,
-                            offset: const Offset(0, 1),
-                          ),
-                        ],
-                      ),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-
-                  /// Cart
-                  Stack(
-                    children: [
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
-                          margin: const EdgeInsets.only(right: 4),
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.3),
-                                spreadRadius: 1,
-                                blurRadius: 2,
-                                offset: const Offset(0, 1),
-                              ),
-                            ],
-                          ),
-                          child: const Icon(
-                            Icons.shopping_bag,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: CircleAvatar(
-                          radius: 10,
-                          backgroundColor: AppColor.red,
-                          child: Text(
-                            '4',
-                            style: AppFont.whiteText.copyWith(
-                              fontSize: 10,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
               ),
             ),
           ],
@@ -125,7 +39,7 @@ class ProductDetailShimmer extends StatelessWidget {
                 baseColor: Colors.grey[300]!,
                 highlightColor: Colors.grey[100]!,
                 child: Container(
-                  width: double.infinity,
+                  width: 200,
                   height: 20,
                   color: Colors.white,
                 ),

@@ -47,10 +47,7 @@ class _CartPageState extends State<CartPage> {
                 itemCount: cartResponse.data!.length,
                 itemBuilder: (context, index) {
                   final cart = cartResponse.data![index];
-                  return CartCard(
-                    cart: cart,
-                    // removingCartId: cart.id!,
-                  );
+                  return CartCard(cart: cart);
                 },
               );
             },

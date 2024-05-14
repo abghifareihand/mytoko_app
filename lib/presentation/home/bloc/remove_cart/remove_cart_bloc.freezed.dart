@@ -316,7 +316,8 @@ mixin _$RemoveCartState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String message) loaded,
+    required TResult Function(RemoveCartResponseModel removeCartResponse)
+        loaded,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -324,7 +325,7 @@ mixin _$RemoveCartState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String message)? loaded,
+    TResult? Function(RemoveCartResponseModel removeCartResponse)? loaded,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -332,7 +333,7 @@ mixin _$RemoveCartState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String message)? loaded,
+    TResult Function(RemoveCartResponseModel removeCartResponse)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -422,7 +423,8 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String message) loaded,
+    required TResult Function(RemoveCartResponseModel removeCartResponse)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -433,7 +435,7 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String message)? loaded,
+    TResult? Function(RemoveCartResponseModel removeCartResponse)? loaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -444,7 +446,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String message)? loaded,
+    TResult Function(RemoveCartResponseModel removeCartResponse)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -536,7 +538,8 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String message) loaded,
+    required TResult Function(RemoveCartResponseModel removeCartResponse)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -547,7 +550,7 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String message)? loaded,
+    TResult? Function(RemoveCartResponseModel removeCartResponse)? loaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -558,7 +561,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String message)? loaded,
+    TResult Function(RemoveCartResponseModel removeCartResponse)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -616,7 +619,7 @@ abstract class _$$LoadedImplCopyWith<$Res> {
           _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
       __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String message});
+  $Res call({RemoveCartResponseModel removeCartResponse});
 }
 
 /// @nodoc
@@ -630,13 +633,13 @@ class __$$LoadedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? message = null,
+    Object? removeCartResponse = null,
   }) {
     return _then(_$LoadedImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
+      null == removeCartResponse
+          ? _value.removeCartResponse
+          : removeCartResponse // ignore: cast_nullable_to_non_nullable
+              as RemoveCartResponseModel,
     ));
   }
 }
@@ -644,14 +647,14 @@ class __$$LoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl(this.message);
+  const _$LoadedImpl(this.removeCartResponse);
 
   @override
-  final String message;
+  final RemoveCartResponseModel removeCartResponse;
 
   @override
   String toString() {
-    return 'RemoveCartState.loaded(message: $message)';
+    return 'RemoveCartState.loaded(removeCartResponse: $removeCartResponse)';
   }
 
   @override
@@ -659,11 +662,12 @@ class _$LoadedImpl implements _Loaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoadedImpl &&
-            (identical(other.message, message) || other.message == message));
+            (identical(other.removeCartResponse, removeCartResponse) ||
+                other.removeCartResponse == removeCartResponse));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
+  int get hashCode => Object.hash(runtimeType, removeCartResponse);
 
   @JsonKey(ignore: true)
   @override
@@ -676,10 +680,11 @@ class _$LoadedImpl implements _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String message) loaded,
+    required TResult Function(RemoveCartResponseModel removeCartResponse)
+        loaded,
     required TResult Function(String message) error,
   }) {
-    return loaded(message);
+    return loaded(removeCartResponse);
   }
 
   @override
@@ -687,10 +692,10 @@ class _$LoadedImpl implements _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String message)? loaded,
+    TResult? Function(RemoveCartResponseModel removeCartResponse)? loaded,
     TResult? Function(String message)? error,
   }) {
-    return loaded?.call(message);
+    return loaded?.call(removeCartResponse);
   }
 
   @override
@@ -698,12 +703,12 @@ class _$LoadedImpl implements _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String message)? loaded,
+    TResult Function(RemoveCartResponseModel removeCartResponse)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(message);
+      return loaded(removeCartResponse);
     }
     return orElse();
   }
@@ -747,9 +752,10 @@ class _$LoadedImpl implements _Loaded {
 }
 
 abstract class _Loaded implements RemoveCartState {
-  const factory _Loaded(final String message) = _$LoadedImpl;
+  const factory _Loaded(final RemoveCartResponseModel removeCartResponse) =
+      _$LoadedImpl;
 
-  String get message;
+  RemoveCartResponseModel get removeCartResponse;
   @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -821,7 +827,8 @@ class _$ErrorImpl implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String message) loaded,
+    required TResult Function(RemoveCartResponseModel removeCartResponse)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -832,7 +839,7 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String message)? loaded,
+    TResult? Function(RemoveCartResponseModel removeCartResponse)? loaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -843,7 +850,7 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String message)? loaded,
+    TResult Function(RemoveCartResponseModel removeCartResponse)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

@@ -5,6 +5,7 @@ import 'package:mytoko_app/core/components/spaces.dart';
 import 'package:mytoko_app/core/constants/app_color.dart';
 import 'package:mytoko_app/core/constants/app_font.dart';
 import 'package:mytoko_app/core/extensions/screen.dart';
+import 'package:mytoko_app/presentation/home/bloc/cart/cart_bloc.dart';
 import 'package:mytoko_app/presentation/home/pages/cart_page.dart';
 import 'package:mytoko_app/presentation/home/pages/search_page.dart';
 import 'package:mytoko_app/presentation/home/widgets/banner_slider.dart';
@@ -27,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     context.read<ProductsBloc>().add(const ProductsEvent.getProducts());
+    context.read<CartBloc>().add(const CartEvent.getCart());
     context.read<UserBloc>().add(const UserEvent.getUser());
     super.initState();
   }
@@ -96,40 +98,71 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                               const Spacer(),
-                              Container(
-                                padding: const EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                  color: AppColor.white.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const CartPage(),
+                              Stack(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const CartPage(),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 6, right: 6),
+                                      padding: const EdgeInsets.all(6),
+                                      decoration: BoxDecoration(
+                                        color: AppColor.white.withOpacity(0.3),
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
-                                    );
-                                  },
-                                  child: const Icon(
-                                    Icons.shopping_cart,
-                                    color: AppColor.white,
+                                      child: const Icon(
+                                        Icons.shopping_cart,
+                                        color: AppColor.white,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  Positioned(
+                                    top: 0,
+                                    right: 0,
+                                    child: BlocBuilder<CartBloc, CartState>(
+                                      builder: (context, state) {
+                                        return state.maybeWhen(
+                                          orElse: () {
+                                            return const SizedBox();
+                                          },
+                                          loaded: (cartResponse) {
+                                            return CircleAvatar(
+                                              radius: 10,
+                                              backgroundColor: AppColor.red,
+                                              child: Text(
+                                                '${cartResponse.totalQuantity}',
+                                                style:
+                                                    AppFont.whiteText.copyWith(
+                                                  fontSize: 10,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SpaceWidth(10),
+                              const SpaceWidth(8),
                               Container(
+                                margin: const EdgeInsets.only(top: 6, right: 6),
                                 padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
                                   color: AppColor.white.withOpacity(0.3),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: InkWell(
-                                  onTap: () {},
-                                  child: const Icon(
-                                    Icons.notifications,
-                                    color: AppColor.white,
-                                  ),
+                                child: const Icon(
+                                  Icons.notifications,
+                                  color: AppColor.white,
                                 ),
                               ),
                             ],

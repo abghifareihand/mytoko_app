@@ -6,6 +6,7 @@ import 'package:mytoko_app/core/constants/formatter.dart';
 import 'package:mytoko_app/data/models/request/favorite_request_model.dart';
 import 'package:mytoko_app/data/models/response/products_response_model.dart';
 import 'package:mytoko_app/presentation/home/bloc/favorite/favorite_bloc.dart';
+import 'package:mytoko_app/presentation/home/bloc/product_detail/product_detail_bloc.dart';
 import 'package:mytoko_app/presentation/home/pages/detail_page.dart';
 import '../../../core/constants/app_image.dart';
 

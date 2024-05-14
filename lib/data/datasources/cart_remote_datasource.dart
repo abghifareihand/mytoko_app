@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:mytoko_app/data/models/request/add_cart_request_model.dart';
 import 'package:mytoko_app/data/models/response/add_cart_response_model.dart';
 import 'package:mytoko_app/data/models/response/cart_response_model.dart';
+import 'package:mytoko_app/data/models/response/remove_cart_response_model.dart';
 
 import '../../core/constants/variables.dart';
 import 'auth_local_datasource.dart';
@@ -25,7 +26,10 @@ class CartRemoteDatasource {
       body: addCartRequest.toJson(),
     );
 
-    log('Response Add to Cart : ${response.body}');
+    Map<String, dynamic> responseMap = json.decode(response.body);
+    log('Response Add Cart : ${responseMap['message']}');
+
+    // log('Response Add to Cart : ${response.body}');
 
     if (response.statusCode == 200) {
       return Right(AddCartResponseModel.fromJson(response.body));
@@ -59,23 +63,25 @@ class CartRemoteDatasource {
   }
 
   /// REMOVE FROM CART
-  Future<Either<String, String>> removeFromCart(int cartId) async {
+  Future<Either<String, RemoveCartResponseModel>> removeFromCart(
+      int cartId) async {
     final token = await AuthLocalDatasource().getToken();
     final headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'
     };
-    final response = await http.delete(
+    final response = await http.put(
       Uri.parse('${Variables.baseUrl}/api/cart/$cartId'),
       headers: headers,
     );
 
-    log('Response Get Cart : ${response.body}');
+    Map<String, dynamic> responseMap = json.decode(response.body);
+    log('Response Remove Cart : ${responseMap['message']}');
+    // log('Response Remove Cart : ${response.body}');
 
     if (response.statusCode == 200) {
-      final successMessage = jsonDecode(response.body)['message'];
-      return Right(successMessage);
+      return Right(RemoveCartResponseModel.fromJson(response.body));
     } else {
       final errorMessage = jsonDecode(response.body)['message'];
       return Left(errorMessage);

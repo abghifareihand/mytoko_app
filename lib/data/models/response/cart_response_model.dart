@@ -5,12 +5,16 @@ class CartResponseModel {
     final bool? success;
     final String? message;
     final List<Cart>? data;
+    final int? totalQuantity;
+    final int? totalPrice;
 
     CartResponseModel({
         this.code,
         this.success,
         this.message,
         this.data,
+        this.totalQuantity,
+        this.totalPrice,
     });
 
     factory CartResponseModel.fromJson(String str) => CartResponseModel.fromMap(json.decode(str));
@@ -22,6 +26,8 @@ class CartResponseModel {
         success: json["success"],
         message: json["message"],
         data: json["data"] == null ? [] : List<Cart>.from(json["data"]!.map((x) => Cart.fromMap(x))),
+        totalQuantity: json["total_quantity"],
+        totalPrice: json["total_price"],
     );
 
     Map<String, dynamic> toMap() => {
@@ -29,6 +35,8 @@ class CartResponseModel {
         "success": success,
         "message": message,
         "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toMap())),
+        "total_quantity": totalQuantity,
+        "total_price": totalPrice,
     };
 }
 

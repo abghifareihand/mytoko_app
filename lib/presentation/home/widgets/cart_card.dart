@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mytoko_app/core/components/loading.dart';
 import 'package:mytoko_app/core/components/spaces.dart';
 import 'package:mytoko_app/core/constants/app_color.dart';
 import 'package:mytoko_app/core/constants/app_font.dart';
 import 'package:mytoko_app/core/constants/app_image.dart';
 import 'package:mytoko_app/core/constants/formatter.dart';
+import 'package:mytoko_app/data/models/request/add_cart_request_model.dart';
 import 'package:mytoko_app/data/models/response/cart_response_model.dart';
+import 'package:mytoko_app/presentation/home/bloc/add_cart/add_cart_bloc.dart';
 import 'package:mytoko_app/presentation/home/bloc/cart/cart_bloc.dart';
 import 'package:mytoko_app/presentation/home/bloc/remove_cart/remove_cart_bloc.dart';
 
@@ -20,17 +21,27 @@ class CartCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RemoveCartBloc, RemoveCartState>(
+    return BlocListener<AddCartBloc, AddCartState>(
       listener: (context, state) {
+        // Update UI jika penambahan ke keranjang berhasil
         state.maybeWhen(
           orElse: () {},
-          loaded: (message) {
+          loaded: (addCartResponse) {
             context.read<CartBloc>().add(const CartEvent.getCart());
           },
         );
       },
-      builder: (context, state) {
-        return Container(
+      child: BlocListener<RemoveCartBloc, RemoveCartState>(
+        listener: (context, state) {
+          // Update UI jika penghapusan dari keranjang berhasil
+          state.maybeWhen(
+            orElse: () {},
+            loaded: (removeCartResponse) {
+              context.read<CartBloc>().add(const CartEvent.getCart());
+            },
+          );
+        },
+        child: Container(
           padding: const EdgeInsets.all(12),
           child: Row(
             children: [
@@ -60,7 +71,7 @@ class CartCard extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            priceFormat(cart.product!.price),
+                            priceFormat(cart.product!.price! * cart.quantity!),
                             style: AppFont.blackText.copyWith(
                               fontWeight: medium,
                             ),
@@ -70,12 +81,10 @@ class CartCard extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            GestureDetector(
+                            InkWell(
                               onTap: () {
-                                if (cart.quantity == 1) {
-                                  context.read<RemoveCartBloc>().add(
-                                      RemoveCartEvent.removeFromCart(cart.id!));
-                                }
+                                context.read<RemoveCartBloc>().add(
+                                    RemoveCartEvent.removeFromCart(cart.id!));
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(6),
@@ -107,8 +116,12 @@ class CartCard extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () {},
+                            InkWell(
+                              onTap: () {
+                                context.read<AddCartBloc>().add(
+                                    AddCartEvent.addToCart(AddCartRequestModel(
+                                        productId: cart.product!.id!)));
+                              },
                               child: Container(
                                 padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
@@ -134,8 +147,8 @@ class CartCard extends StatelessWidget {
               ),
             ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

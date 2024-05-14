@@ -6,7 +6,10 @@ import 'package:mytoko_app/core/constants/app_image.dart';
 import 'package:mytoko_app/data/models/request/add_cart_request_model.dart';
 import 'package:mytoko_app/data/models/request/favorite_request_model.dart';
 import 'package:mytoko_app/presentation/home/bloc/add_cart/add_cart_bloc.dart';
+import 'package:mytoko_app/presentation/home/bloc/cart/cart_bloc.dart';
 import 'package:mytoko_app/presentation/home/bloc/favorite/favorite_bloc.dart';
+import 'package:mytoko_app/presentation/home/bloc/products/products_bloc.dart';
+import 'package:mytoko_app/presentation/home/pages/cart_page.dart';
 import 'package:mytoko_app/presentation/home/pages/review_add_page.dart';
 import 'package:mytoko_app/presentation/home/pages/review_detail_page.dart';
 import 'package:mytoko_app/presentation/home/widgets/product_detail_shimmer.dart';
@@ -53,23 +56,6 @@ class _DetailPageState extends State<DetailPage> {
               final product = productDetailResponse.data;
               return ListView(
                 children: [
-                  /// Image slider
-                  // ImageSliderProduct(
-                  //   imageUrls: widget.product.galleries
-                  //       .map((gallery) => gallery.imageUrl)
-                  //       .toList(),
-                  //   controller: _controller,
-                  // ),
-
-                  // ClipRRect(
-                  //   child: Image.network(
-                  //     product!.galleries![0].imageUrl!,
-                  //     width: double.infinity,
-                  //     height: 300,
-                  //     fit: BoxFit.cover,
-                  //   ),
-                  // ),
-
                   /// Image no slider
                   Stack(
                     children: [
@@ -115,12 +101,73 @@ class _DetailPageState extends State<DetailPage> {
                             ),
 
                             /// Cart
-                            Stack(
+                            Row(
                               children: [
+                                Stack(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        margin: const EdgeInsets.only(right: 4),
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.3),
+                                              spreadRadius: 1,
+                                              blurRadius: 2,
+                                              offset: const Offset(0, 1),
+                                            ),
+                                          ],
+                                        ),
+                                        child: const Icon(
+                                          Icons.shopping_bag,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: BlocBuilder<CartBloc, CartState>(
+                                        builder: (context, state) {
+                                          return state.maybeWhen(
+                                            orElse: () {
+                                              return const SizedBox();
+                                            },
+                                            loaded: (cartResponse) {
+                                              return CircleAvatar(
+                                                radius: 10,
+                                                backgroundColor: AppColor.red,
+                                                child: Text(
+                                                  '${cartResponse.totalQuantity}',
+                                                  style: AppFont.whiteText
+                                                      .copyWith(
+                                                    fontSize: 10,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SpaceWidth(8.0),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    final favoriteRequest =
+                                        FavoriteRequestModel(
+                                            productId: product.id!);
+                                    context.read<FavoriteBloc>().add(
+                                        FavoriteEvent.doFavorite(
+                                            favoriteRequest));
+                                  },
                                   child: Container(
-                                    margin: const EdgeInsets.only(right: 4),
                                     padding: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
@@ -134,22 +181,25 @@ class _DetailPageState extends State<DetailPage> {
                                         ),
                                       ],
                                     ),
-                                    child: const Icon(
-                                      Icons.shopping_bag,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 0,
-                                  right: 0,
-                                  child: CircleAvatar(
-                                    radius: 10,
-                                    backgroundColor: AppColor.red,
-                                    child: Text(
-                                      '4',
-                                      style: AppFont.whiteText.copyWith(
-                                        fontSize: 10,
+                                    child: BlocListener<FavoriteBloc,
+                                        FavoriteState>(
+                                      listener: (context, state) {
+                                        state.maybeWhen(
+                                          orElse: () {},
+                                          loaded: (favoriteResponse) {
+                                            context
+                                                .read<ProductDetailBloc>()
+                                                .add(ProductDetailEvent
+                                                    .getProductDetail(
+                                                        widget.productId));
+                                          },
+                                        );
+                                      },
+                                      child: Icon(
+                                        Icons.favorite,
+                                        color: product!.isFavorite!
+                                            ? Colors.red
+                                            : Colors.grey,
                                       ),
                                     ),
                                   ),
@@ -169,54 +219,14 @@ class _DetailPageState extends State<DetailPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              product!.name!,
-                              style: AppFont.blackText.copyWith(
-                                fontSize: 18,
-                                fontWeight: semiBold,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            BlocListener<FavoriteBloc, FavoriteState>(
-                              listener: (context, state) {
-                                state.maybeWhen(
-                                  orElse: () {},
-                                  loaded: (favoriteResponse) {
-                                    context.read<ProductDetailBloc>().add(
-                                        ProductDetailEvent.getProductDetail(
-                                            widget.productId));
-                                  },
-                                );
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: const BoxDecoration(
-                                  color: Colors.blue,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: InkWell(
-                                  onTap: () {
-                                    final favoriteRequest =
-                                        FavoriteRequestModel(
-                                            productId: product.id!);
-                                    context.read<FavoriteBloc>().add(
-                                        FavoriteEvent.doFavorite(
-                                            favoriteRequest));
-                                  },
-                                  child: Icon(
-                                    Icons.favorite,
-                                    color: product.isFavorite!
-                                        ? Colors.red
-                                        : Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          product!.name!,
+                          style: AppFont.blackText.copyWith(
+                            fontSize: 18,
+                            fontWeight: semiBold,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         const SpaceHeight(16),
                         Text(
@@ -366,29 +376,6 @@ class _DetailPageState extends State<DetailPage> {
           );
         },
       ),
-      //   bottomNavigationBar: Container(
-      //     padding: const EdgeInsets.all(12),
-      //     child: ElevatedButton(
-      //       style: ElevatedButton.styleFrom(
-      //         shape: RoundedRectangleBorder(
-      //           borderRadius: BorderRadius.circular(10),
-      //         ),
-      //       ),
-      //       onPressed: () {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => ReviewAddPage(
-      //       productId: widget.productId,
-      //     ),
-      //   ),
-      // );
-      //       },
-      //       child: const Text('Add Review'),
-      //     ),
-      //   ),
-      // );
-
       bottomNavigationBar: Container(
         height: 60,
         padding: const EdgeInsets.all(10),
@@ -439,14 +426,20 @@ class _DetailPageState extends State<DetailPage> {
                   listener: (context, state) {
                     state.maybeWhen(
                       orElse: () {},
-                    loaded: (addCartResponse) {
-                      ScaffoldMessenger.of(context).showSnackBar(
+                      loaded: (addCartResponse) {
+                        ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(addCartResponse.message!),
                             backgroundColor: Colors.green,
                           ),
                         );
-                    },
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CartPage(),
+                          ),
+                        );
+                      },
                       error: (message) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
